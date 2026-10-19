@@ -93,16 +93,16 @@ g = [
     ' آخ جون منم باهات خوشحال شدم!!',
     ' خیلی عالیه!!',
     ' فوق العاده ست خداروشکر کن!!!',
-    ' جدی میگی? این که اوکیی  بی نظیره!!',
+    ' جدی میگی؟ این که اوکیی  بی نظیره!!',
     ' ایول این که خوبی معرکه ست!!',
-    ' واقعا?? آخجون که خوبی!!'
+    ' واقعا؟؟ آخجون که خوبی!!'
 ]
 vg = [
-    ' پشششمممماممممممم!!!!',
-    ' خداروشششککررر!!!!',
-    ' ایووللللللللل!!!!',
-    ' خداییی?? بی نظیییییییرهه!!',
-    ' جدییی??? خیلی خوشحالمممممم!!'
+    ' پششممامممم!!!!',
+    ' خداروشکررر!!!!',
+    ' ایوللللللللل!!!!',
+    ' خدایی؟؟؟ بی نظییره!!',
+    ' جدیی؟؟؟ خیلیی خوشحالممم!!!'
 ]
 n = [
     ' ای بابا, بخند یکم توام... هیچ خبری نیست!',
@@ -175,15 +175,15 @@ def intro():
 
 
 def get_date_work_grade(word):
-    work = ask(f'\n {word} چیکار کردی؟ \n ')
+    work = ask(f'\n {word} چیکار کردی؟ \n\n >> ')
     if work is None:
         return None
     while len(work) < 2:
         print(' یه کم بیشتر توضیح بده ...')
-        work = ask(f'\n {word} چیکار کردی؟ \n ')
+        work = ask(f'\n {word} چیکار کردی؟ \n\n >> ')
         if work is None:
             return None
-    grade = ask('\nاز 0 تا 10 یعنی حال خوب و 0 تا -10 هم که پایینه!\n اوکی, حالا به حست چه نمره ای میدی؟ ')
+    grade = ask('\n(از -10 تا 10) به حست چه نمره ای میدی؟ \n >> ')
     while True:
         if grade is None:
             return None
@@ -194,28 +194,34 @@ def get_date_work_grade(word):
                 break
         except ValueError:
             pass
-        print(" بی زحمت یه عدد اونم از بین -10 تا 10 انتخاب کن\n نگران نباش! چیزایی که تا الان نوشتی رو نگهشون داشتم . فقط باید یه عدد وارد کنی")
-        grade = ask('\n حالا یه نمره به حست بده :  \n ')
+        print(" بی زحمت یه عدد اونم از بین -10 تا 10 انتخاب کن\n نگران نباش! چیزایی که تا الان نوشتی رو نگهشون داشتم . فقط باید یه عدد وارد کنی\n")
+        grade = ask('\n حالا یه نمره به حست بده :  \n >> ')
     date = jdt.datetime.now().strftime("%Y/%m/%d %H:%M")
     feel = count_feelings(grade)
 
     if feel == 'vb':
         print(f'\n {grade}{rd.choice(vb)}')
-        safe_fa_input('\n هروقت خواستی اینتر کن بریم عزیزم... \n')
+        safe_fa_input('\n هروقت خواستی اینتر کن بریم عزیزم...')
+        print('')
     elif feel == 'b':
         print(f'\n {grade},{rd.choice(b)}')
-        safe_fa_input('\n هروقت آماده بودی اینتر کن بریم عزیزم... \n')        
+        safe_fa_input('\n هروقت آماده بودی اینتر کن بریم عزیزم...')
+        print('')
     elif feel == 'g':
-        print(f'\n {grade}!?{rd.choice(g)}')
-        safe_fa_input('\n هروقت خواستی اینتر کن بریم!... \n')
+        print(f'\n {grade}!؟{rd.choice(g)}')
+        safe_fa_input('\n هروقت خواستی اینتر کن بریم!...')
+        print('')
     elif feel == 'vg':
-        print(f'\n {grade}!?!!{rd.choice(vg)}')
-        safe_fa_input('\n هروقت خواستییی اینتر کننن بریمم!!!!!... \n')
+        print(f'\n {grade}!؟!!{rd.choice(vg)}')
+        safe_fa_input('\n هروقت خواستییی اینتر کننن بریمم!!!!!...')
+        print('')
     elif feel == 'n':
         print(f'\n {grade}{rd.choice(n)}')
-        safe_fa_input('\n ابنتر کن بریم ادامه عزیزم!! ولی قبلش اول یکم بخند (: ... \n')
+        safe_fa_input('\n ابنتر کن بریم ادامه عزیزم!! ولی قبلش اول یکم بخند (: ... ')
+        print('')
     else:
-        safe_fa_input('\n چی شد؟ نفهمیدم ولی اینتر کن بریم... \n')
+        safe_fa_input('\n چی شد؟ نفهمیدم ولی اینتر کن بریم... ')
+        print('')
     
     return date, work, grade+10
 
@@ -226,27 +232,27 @@ def new_data(now, work, grade):
     data['Grade'].append(grade)
 
 
-def run():
+def run(word):
     n=0
-    nwg = get_date_work_grade(intro())
+    nwg = get_date_work_grade(word)
     while True:
         if nwg is not None:
             new_data(*nwg)
         prmpt = continue_prompts[n]
-        nxt = safe_fa_input(f'{prmpt} ')
+        nxt = safe_fa_input(f'\n{prmpt} \n >> ')
         if nxt.lower() not in yeses and nxt:
             break
         n+=1
         if n == len(continue_prompts) :
             n=0
-        nwg = get_date_work_grade('خب, بگو')
+        nwg = get_date_work_grade('خب. بگو')
 
 
 def save():
     pd.DataFrame(data).to_csv('my_did.csv' ,encoding='utf-8-sig', index=False)
 
 
-def main():
+def check_file():
     global data
     global file_exist
     try:
@@ -260,26 +266,29 @@ def main():
             'Work':[],
             'Grade':[]
         }
-
-    run()
-    save()
     return file_exist
-    
+
+
+def main():
+    check_file()
+    run(intro())
+    save()
+    print('خدافظ... بعدا میبینمت! ')
 
 
 def feelings_plot():
     if not data['Date']:
-        print('\nهنوز داده ای ثبت نشده مشتی ... وگرنه برات نمودار میاوردم.\n')
+        print('\nهنوز داده ای ثبت نشده مشتی... وگرنه برات نمودار میاوردم.\n')
         return
     x, y = data['Date'], data['Grade']
     plt.plot(x, y, label='feelings')
-    plt.axhline(y=10, ls='--', color='red', label='مرز')
+    plt.axhline(y=10, ls='--', color='red', label='neutral border')
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
     plt.show()
-    safe_fa_input()
+    safe_fa_input("\nاینتر کن\n")
     plt.bar(x, y)
-    plt.axhline(y=10, ls='--', color='red', label='مرز')
+    plt.axhline(y=10, ls='--', color='red', label='neutral border')
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
     plt.show()
