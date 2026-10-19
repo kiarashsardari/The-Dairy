@@ -1,4 +1,5 @@
-
+from fa_console import fa_input as input
+import matplotlib.pyplot as plt
 import jdatetime as jdt
 import pandas as pd
 import random as rd
@@ -8,7 +9,7 @@ yeses = [
     "yas", "yass", "yasss", "yess", "yesss", "yeass", "yeahhh", "yessir", "yes sir",
     "yes ma'am", "yes please", "ya", "aye", "ay", "aye aye", "affirmative",
     "ok", "okay", "okey", "okey dokey", "okie", "okie dokie", "okei", "oki",
-    "k", "kk", "sure", "sure thing", "for sure", "of course", "certainly",
+    "sure", "sure thing", "for sure", "of course", "certainly",
     "absolutely", "definitely", "indeed", "exactly", "correct", "right", "true",
     "agreed", "deal", "bet", "fine", "fine by me", "alright", "aight", "cool",
     "good", "all good", "sounds good", "works for me", "approved", "confirmed",
@@ -24,99 +25,96 @@ yeses = [
     "doroste", "dorost", "dorooste", "sahih", "ghabole", "ghabul",
     "movafegham", "movafegam", "hale", "halle", "halih","berim","bal","ohom",'uhumm',
     "chashm", "cheshm", "ghorban", "ghorbon", "albate", "hatman", "hatma",
-    "hvi", "ys"]
+    "hvi", "ys", "آره", "اره", "ار", "ا", "یس", "یه", "بلی", "بله", "هره", "باشه", "بریم", "میام", "اره دارم", "آره دارم", "اوهوم", "اهم", "1", "آ", "آر", "باش", "بل", "بله", "ترو", "درست", "درسته", "صحیح", "صحیحه", "تایید میکنم", "تایید", "بریم"]
 continue_prompts = [
-    " Chize dige ie ham anjam dadi, azizam?",
-    " Baz ham kari kardi?",
-    " Mikhay bazam edame bedim?",
-    " Berim baadi?",
-    " Mikhay bishtar begi?",
-    " Kare dige ie ham kardi ke hanooz nagofti?",
-    " Mikhay bishtar begi vasaam?",
-    " Amade ie bazam begi?",
-    " Mikhay chize dige ie ham begi?",
-    " Kar dige ie ham kardi?",
-    " Dobare harfi dari, azizam?",
-    " Mikhay chiz bishtari ezafe konim?",
-    " Edame midim?",
-    " Baz ham hast?",
-    " Baz ham monde?",
-    " Doost dari bazam begi?",
-    " Emrooz kar dige ie ham kardi?",
-    " Kare dige ie ham kardi?",
-    " Kare dige ie ham emrooz kardi?",
-    " Kare dige ie ham anjam dadi?",
-    " Majara ye dige ie ham hast?",
-    " Bazham hast?",
-    " Edame bedim?",
-    " Berim baraye baadi?",
-    " Mikhay baz ham sohbat koni?"
+    " چیز دیگه ای هم هست عزیزم؟",
+    " میخوای بازم ادامه بدیم؟",
+    " بریم برای ثبت بعدی؟",
+    " میخوای بیشتر بگی؟",
+    " چیز دیگه ای هم هست که نگفتی؟",
+    " میخوای بازم واسم بگی؟",
+    " آماده ای بازم بگی؟",
+    " میخوای چیز دیگه ای هم بگی؟",
+    " کار دیگه ای هم هست که کردی؟",
+    " بازم حرفی داری؟",
+    " میخوای بیشتر تعریف کنی؟",
+    " ادامه بدیم؟",
+    " بازم هست؟",
+    " بازم مونده؟",
+    " دوست داری بازم بگی؟",
+    " امروز بازم کار انجام دادی؟",
+    " کار دیگه ای هم کردی امروز؟",
+    " کار دیگه هم امروز کردی؟",
+    " کار دیگه ای هم انجام دادی؟",
+    " ماجرای دیگه ای هم هست؟",
+    " بازهم هستی؟",
+    " ادامه میدیم؟",
+    " بریم برای ادامه؟",
+    " میخوای بازهم صحبت کنیم؟"
 ]
 late_back_prompts = [
-    ' Che ajab az invara!!!',
-    ' Bebinid ki injast!!',
-    ' Bahbah bebin ki umadeh!!',
-    ' Cheghadr dir kardi delam tang shod!',
-    ' Balakhareh bargashti!'
+    ' چه عجب از این ورا!!!',
+    ' ببینید کی اینجاست!!',
+    ' به به ببین کی اومده!!',
+    ' چقدر دیر اومدی دلم تنگ شد!',
+    ' بالاخره برگشتی!'
 ]
 welcome_back_prompts = [
-    ' Khosh bargashti!',
-    ' Delam barat tang shodeh bood!', 
-    ' Khoshhalam ke bargashti!',
-    ' Eival, oomadi!',
-    ' Khoshhalam dobareh oomadi!',
-    ' Umadi!!!',
-    ' Bargashti!!']
+    ' خوش برگشتی!',
+    ' دلم برات تنگ شده بود!', 
+    ' خوحالم که برگشتی!',
+    ' ایول. برگشتی!',
+    ' خوشحالم دوباره برگشتی!',
+    ' اومدی!!!',
+    ' برگشتی!!']
 
 early_back_prompts = [
-    ' Doobareh!',
-    ' Akhjoon dobareh oomadi!',
-    ' Khoshhalam ke zood bargashti!',
-    ' Che zood bargashti!',
-    ' Baz chi avordi?',
-    ' Bego bebinam dige chi dari?'
+    ' دوباره سلام!',
+    ' هه دوباره اومدی!',
+    ' خوشحالم که دوباره برگشتی!',
+    ' چه زود برگشتی!',
 ]
 vb = [
-    ' ... Nemidoonam chi begam. vali negaran nabash hame chiz ok misheh...',
-    ' ... Eybi nadareh. asla moshkeli nist...',
-    ' ... Oh, negaran nabash khodet ham midooni in haal mondegar nist...',
-    ' ... Amm.. bashe vali sakht nagir motmaen am dorost mishe...',
-    ' ... Eshkali nadareh hame chiz dorost mishe ... kheyli khoobe ke gofti...',
+    ' ... نمیدونم چی بگم. ولی میدونم همه چیز درست میشه...',
+    ' ... عیبی نداره اصلا مشکلی نیست منم اصلا ناراحت نشدم :( ...',
+    ' ... اوه, عیب نداره خودت خوب میدونی این حال موندگار نیست...',
+    ' ... اممم. باشه ولی سخت نگیر مطمئنم همه چیز رو خدا درست میکنه...',
+    ' ... اشکالی نداره صبر داشته باش اوکی میشه ... خیلی خوبه که گفتی...',
     ]
 b = [
-    ' Ey baba, dorost mishe moshkeli nist...',
-    ' Amm, sakht nagir baba hich khabari nist...',
-    ' Hichi arzash nadareh ke bekhai baash narahat bashi eiyb nadare...',
-    ' Negaran nabash baba pas khoda chikare hast? khodesh komak mikoneh...'
+    ' ای بابا. درست میشه مشکلی نیست...',
+    ' عیبی نداره اصلا مشکلی نیست منم اصلا ناراحت نشدم :( ...',
+    ' اممم. سخت نگیر بابا هیچ خبری نیست...',
+    ' هیچی ارزش ناراحتی تو نداره سخت نگیر...',
+    ' نگران نباش بابا پس خدا چیکاره ست؟ خودش اوکی میکنه...'
 ]
 g = [
-    ' Eiyval aliyehh!!!',
-    ' Akhjoon manam bahat khoshhal shodam!!',
-    ' Kheyli aliye!!',
-    ' Fogholade ast!!!',
-    ' Jedi migi? binazire!!',
-    ' Eiyval in maarekast!!',
-    ' Vaghaan?? akhjoooon!!'
+    ' ایول عالیه!!!',
+    ' آخ جون منم باهات خوشحال شدم!!',
+    ' خیلی عالیه!!',
+    ' فوق العاده ست خداروشکر کن!!!',
+    ' جدی میگی? این که اوکیی  بی نظیره!!',
+    ' ایول این که خوبی معرکه ست!!',
+    ' واقعا?? آخجون که خوبی!!'
 ]
 vg = [
-    ' Pashmmaaammmmmmmmmm!!!!',
-    ' Khoddaa ro shokrrr!!!!',
-    ' Akhjoooooooon!!!!',
-    ' Vaghaan?? Binaziiirehhhhhhhhhh!!',
-    ' Jediiiii??? kheily khoshhalaamm!!'
+    ' پشششمممماممممممم!!!!',
+    ' خداروشششککررر!!!!',
+    ' ایووللللللللل!!!!',
+    ' خداییی?? بی نظیییییییرهه!!',
+    ' جدییی??? خیلی خوشحالمممممم!!'
 ]
 n = [
-    ' Ey baba, bekhand ekam to ham... hich khabari nist!',
-    ' eeeeh, ada dar naiar dige, halet aliye digeh!!',
-    ' Aha pas hich khabari nisto halet okeyeh!!',
-    ' Aziat nakon digeh, kheily ham khoobi fghat khodet nemidooni!!',
-    ' Eh, negah kon ta alan in hame kar kardi be khodet negah kon, halet aliye!!',
-    ' Khob pas pasho boro yekam becharkh negah kon chegadr hame chiz ghashangeh!!'
+    ' ای بابا, بخند یکم توام... هیچ خبری نیست!',
+    ' اههه, ادا در نیار , حالت عالیه دیگه!!',
+    ' آها پس خودت خوب میدونی هیچیت نیست مسخره بازی درنیار دیگه!!',
+    ' اذیت نکن دیگه . خیلی هم حالت خبه ادا در نیار !!',
+    ' خب پس پاشو برو یکم بچرخ نگاه کن چقدر همه چیز قشنگه!!'
 ]
 rd.shuffle(continue_prompts)
 
 
-def safe_input(inpt):
+def safe_input(inpt=''):
     try:
         inpt = input(inpt)
         return inpt
@@ -151,7 +149,7 @@ def count_feelings(grade):
 def ask(prompt):
     inpt = safe_input(prompt)
     inpt = inpt.strip()
-    if inpt.upper() == 'C':
+    if inpt.upper() == 'C' or inpt == 'ک' or inpt == 'کنسل' or inpt == 'کنس' or inpt.upper() == 'CANCEL': 
         return None
     return inpt
 
@@ -159,35 +157,33 @@ def ask(prompt):
 def intro():
     print('\n c = cancel\n')
     tl = to_late() if file_exist else None
-    word = 'Emrooz'
+    word = 'امروز'
     if tl is None:
-        print(' Salaam!!!')
-        print(' Khosh umadi pishe ma!')
+        print(' سلام!!!')
+        print(' به جمع ما خوش اومدی!')
     elif tl[0]:
-        print(' Salaam!!!')
+        print(' سلام!!!')
         print(rd.choice(late_back_prompts))
     elif tl[1]:
-        word = 'Inbar'
-        print(' Salaam!!!')
+        word = 'اینبار'
+        print(' سلام!')
         print(rd.choice(welcome_back_prompts))
     else:
-        word = 'Inbar'
+        word = 'اینبار'
         print(rd.choice(early_back_prompts))
     return word
 
 
 def get_date_work_grade(word):
-    work = ask(f'\n {word} chikar kardi? \n ')
+    work = ask(f'\n {word} چیکار کردی؟ \n ')
     if work is None:
         return None
     while len(work) < 2:
-        print(' Bizahmat yekam bishtar sohbat kon, bebakhshid dast man nist raais gofte...')
-        work = ask(f'\n {word} chikar kardi? \n ')
+        print(' یه کم بیشتر توضیح بده ...')
+        work = ask(f'\n {word} چیکار کردی؟ \n ')
         if work is None:
             return None
-    
-
-    grade = ask('\nAz 0 ta 10 yaani hale khoob & vali mishe -10 ta 0 ham vared kard!\n OK, hala be heset che nomrei midi?! ')
+    grade = ask('\nاز 0 تا 10 یعنی حال خوب و 0 تا -10 هم که پایینه!\n اوکی, حالا به حست چه نمره ای میدی؟ ')
     while True:
         if grade is None:
             return None
@@ -198,28 +194,28 @@ def get_date_work_grade(word):
                 break
         except ValueError:
             pass
-        print(" Bizahmat ye adad, oon ham az -10 ta 10 entekhab kon\n Negaran nabash, chizayee ke alan neveshti ro negah midaram. faghat ye adadi bego!")
-        grade = ask('\n Hala ye nomrei be heset bede (az -10 ta 10): \n ')
+        print(" بی زحمت یه عدد اونم از بین -10 تا 10 انتخاب کن\n نگران نباش! چیزایی که تا الان نوشتی رو نگهشون داشتم . فقط باید یه عدد وارد کنی")
+        grade = ask('\n حالا یه نمره به حست بده :  \n ')
     date = jdt.datetime.now().strftime("%Y/%m/%d %H:%M")
     feel = count_feelings(grade)
 
     if feel == 'vb':
-        print(f' {grade}{rd.choice(vb)}')
-        safe_input('\n harvaght amade boodi enter kon berim, aziz delam... \n')
+        print(f'\n {grade}{rd.choice(vb)}')
+        safe_input('\n هروقت خواستی اینتر کن بریم عزیزم... \n')
     elif feel == 'b':
-        print(f' {grade},{rd.choice(b)}')
-        safe_input('\n harvaght khasti, enter kon berim azizam... \n')
+        print(f'\n {grade},{rd.choice(b)}')
+        safe_input('\n هروقت آماده بودی اینتر کن بریم عزیزم... \n')        
     elif feel == 'g':
-        print(f' {grade}!?{rd.choice(g)}')
-        safe_input('\n man haminjaamm, harvaght khasti enter kon beriimm!!!!!... \n')
+        print(f'\n {grade}!?{rd.choice(g)}')
+        safe_input('\n هروقت خواستی اینتر کن بریم!... \n')
     elif feel == 'vg':
-        print(f' {grade}!?!!{rd.choice(vg)}')
-        safe_input('\n man haminjaamm,, harvaght khasti enter kon beriimm!!!!!... \n')
+        print(f'\n {grade}!?!!{rd.choice(vg)}')
+        safe_input('\n هروقت خواستییی اینتر کننن بریمم!!!!!... \n')
     elif feel == 'n':
-        print(f'{grade}{rd.choice(n)}')
-        safe_input('\n enter ro bezan berim edameh azizam!! vali ghblesh yekam bekhand aval... \n')
+        print(f'\n {grade}{rd.choice(n)}')
+        safe_input('\n ابنتر کن بریم ادامه عزیزم!! ولی قبلش اول یکم بخند (: ... \n')
     else:
-        safe_input('\n chi shod? nfahmidam... vali harvaght amade boodi enter ro bezan ...\n')
+        safe_input('\n چی شد؟ نفهمیدم ولی اینتر کن بریم... \n')
     
     return date, work, grade+10
 
@@ -243,7 +239,7 @@ def run():
         n+=1
         if n == len(continue_prompts) :
             n=0
-        nwg = get_date_work_grade('khob, bego')
+        nwg = get_date_work_grade('خب, بگو')
 
 
 def save():
@@ -267,7 +263,27 @@ def main():
 
     run()
     save()
+    x, y = data['Date'], data['Grade']
+    feelings_plot(x, y)
+
+
+def feelings_plot(x, y):
+    if not data['Date']:
+        print('\nهنوز داده ای ثبت نشده مشتی ... وگرنه برات نمودار میاوردم.\n')
+        return
+    plt.plot(x, y, label='feelings')
+    plt.axhline(y=10, ls='--', color='red', label='مرز')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.show()
+    safe_input()
+    plt.bar(x, y)
+    plt.axhline(y=10, ls='--', color='red', label='مرز')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == '__main__':
     main()
+    
