@@ -1,0 +1,5 @@
+fa_console
+jdatetime
+matplotlib
+pandas
+prettytable
